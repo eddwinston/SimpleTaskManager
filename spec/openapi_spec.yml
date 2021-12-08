@@ -1,0 +1,587 @@
+openapi: 3.0.1
+x-explorer-enabled: false
+info:
+  title: Task board managment service
+  description: Task board managment service
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: user@email.com
+  version: 1.0.0
+servers:
+- url: https://simpletaskmanager.swagger.io/v1
+- url: http://simpletaskmanager.swagger.io/v1
+tags:
+- name: board
+  description: Create task boards
+- name: task
+  description: Create task
+- name: user
+  description: Operations about user
+paths:
+  /board:
+    # get:
+    #   tags:
+    #   - board
+    #   summary: Get all task boards
+    #   operationId: getAllBoards
+    #   responses:
+    #     200:
+    #       description: successful operation
+    #       content:
+    #         application/json:
+    #           schema:
+    #             type: array
+    #             items:
+    #               $ref: '#/components/schemas/Board'
+    #     405:
+    #       description: Invalid input
+    #       content: {}
+    #   security:
+    #   - api_key: []
+    post:
+      tags:
+      - board
+      summary: Create new task board
+      operationId: createBoard
+      requestBody:
+        description: Board object to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBoard'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Board'
+        405:
+          description: Invalid input
+          content: {}
+      security:
+      - api_key: []
+      x-codegen-request-body-name: body
+  /board/{boardId}:
+    get:
+      tags:
+      - board
+      summary: Get task board
+      operationId: getBoard
+      parameters:
+      - name: boardId
+        in: path
+        description: ID of board to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Board'
+        400:
+          description: Invalid boardId
+          content: {}
+        404:
+          description: Board not found
+          content: {}
+      security:
+      - api_key: []
+    # put:
+    #   tags:
+    #   - board
+    #   summary: Update a task board
+    #   operationId: updateBoard
+    #   parameters:
+    #   - name: boardId
+    #     in: path
+    #     description: Id of the board to update
+    #     required: true
+    #     schema:
+    #       type: integer
+    #       format: int64
+    #   requestBody:
+    #     description: Board object to update
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/Board'
+    #     required: true
+    #   responses:
+    #     200:
+    #       description: Successful operation
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Board'
+    #     400:
+    #       description: Invalid board object
+    #       content: {}
+    #     404:
+    #       description: Board not found
+    #       content: {}
+    #   security:
+    #   - api_key: []
+    #   x-codegen-request-body-name: boardId
+    delete:
+      tags:
+      - board
+      summary: Delete task board by id
+      operationId: deleteBoard
+      parameters:
+      - name: boardId
+        in: path
+        description: ID of board to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Board'
+        400:
+          description: Invalid boardId
+          content: {}
+        404:
+          description: Board not found
+          content: {}
+      security:
+      - api_key: []
+  /board/{boardId}/grant:
+    post:
+      tags:
+      - board
+      summary: Grant user access to board
+      operationId: grantUserAccessToBoard
+      parameters:
+      - name: boardId
+        in: path
+        description: Board id to grant user access to
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: User information to be granted access to board
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserId'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Invalid boardId
+          content: {}
+        404:
+          description: Board not found
+          content: {}
+      security:
+      - api_key: []
+      x-codegen-request-body-name: body
+  /board/{boardId}/revoke:
+    post:
+      tags:
+      - board
+      summary: Grant user access to board
+      operationId: revokeUserAccessToBoard
+      parameters:
+      - name: boardId
+        in: path
+        description: Board id to grant user access to
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: User information to be granted access to board
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserId'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Invalid boardId
+          content: {}
+        404:
+          description: Board not found
+          content: {}
+      security:
+      - api_key: []
+      x-codegen-request-body-name: body
+  /task:
+    # get:
+    #   tags:
+    #   - task
+    #   summary: Get all tasks
+    #   operationId: getAllTasks
+    #   responses:
+    #     200:
+    #       description: successful operation
+    #       content:
+    #         application/json:
+    #           schema:
+    #             type: array
+    #             items:
+    #               $ref: '#/components/schemas/Task'
+    #     405:
+    #       description: Invalid input
+    #       content: {}
+    #   security:
+    #   - api_key: []
+    post:
+      tags:
+      - task
+      summary: Create new task
+      operationId: createTask
+      requestBody:
+        description: Task object to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTask'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        405:
+          description: Invalid input
+          content: {}
+      security:
+      - api_key: []
+      x-codegen-request-body-name: body
+  /task/board/{boardId}:
+    get:
+      tags:
+      - task
+      summary: Get all tasks in a board
+      operationId: getAllTasksInBoard
+      parameters:
+      - name: boardId
+        in: path
+        description: ID of board for which tasks will be returned
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        405:
+          description: Invalid boardId
+          content: {}
+      security:
+      - api_key: []
+  /task/{taskId}:
+    get:
+      tags:
+      - task
+      summary: Get task
+      operationId: getTask
+      parameters:
+      - name: taskId
+        in: path
+        description: ID of task to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        400:
+          description: Invalid taskId
+          content: {}
+        404:
+          description: Task not found
+          content: {}
+      security:
+      - api_key: []
+    put:
+      tags:
+      - task
+      summary: Update a task
+      operationId: updateTask
+      parameters:
+      - name: taskId
+        in: path
+        description: Id of the task to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Task object to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTask'
+        required: true
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        400:
+          description: Invalid task object
+          content: {}
+        404:
+          description: Task not found
+          content: {}
+      security:
+      - api_key: []
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - task
+      summary: Delete task by id
+      operationId: deleteTask
+      parameters:
+      - name: taskId
+        in: path
+        description: ID of task to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        400:
+          description: Invalid taskId
+          content: {}
+        404:
+          description: Board not found
+          content: {}
+      security:
+      - api_key: []
+  /task/{taskId}/assign:
+    post:
+      tags:
+      - task
+      summary: Assign user to task
+      operationId: assignUserToTask
+      parameters:
+      - name: taskId
+        in: path
+        description: Task id to assign user to
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: User information to be assigned to task
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserId'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Invalid taskId
+          content: {}
+        404:
+          description: Task not found
+          content: {}
+      security:
+      - api_key: []
+      x-codegen-request-body-name: body
+  /task/{taskId}/unassign:
+    post:
+      tags:
+      - task
+      summary: Unassign user to task
+      operationId: unassignUserToTask
+      parameters:
+      - name: taskId
+        in: path
+        description: Task id to unassign user from
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: User information to be unassigned from task
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserId'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        400:
+          description: Invalid taskId
+          content: {}
+        404:
+          description: Task not found
+          content: {}
+      security:
+      - api_key: []
+      x-codegen-request-body-name: body
+  /user:
+    post:
+      tags:
+      - user
+      summary: Create user
+      description: Creates a new user
+      operationId: createUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+      - api_key: []
+      x-codegen-request-body-name: body
+  /user/batchCreate:
+    post:
+      tags:
+      - user
+      summary: Creates list of users
+      operationId: creatUsersInBatch
+      requestBody:
+        description: List of user object
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      security:
+      - api_key: []
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    NewBoard:
+      type: object
+      properties:
+        name:
+          type: string
+    Board:
+      allOf:
+        - $ref: "#/components/schemas/NewBoard"
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+            tasks:
+              type: array
+              items:
+                $ref: '#/components/schemas/Task'
+    NewTask:
+      type: object
+      properties:
+        boardId:
+          type: integer
+          format: int64
+        title:
+          type: string
+    UpdateTask:
+      allOf:
+        - $ref: "#/components/schemas/NewTask"
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            status:
+              type: string
+              description: Task status
+              enum:
+              - New
+              - InProgress
+              - Completed
+    Task:
+      allOf:
+        - $ref: "#/components/schemas/UpdateTask"
+        - type: object
+          properties:
+            createdAt:
+              type: string
+            completedAt:
+              type: string
+    NewUser:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    User:
+      allOf:
+        - $ref: "#/components/schemas/NewUser"
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    UserId:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
